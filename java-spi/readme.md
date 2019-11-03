@@ -2,13 +2,29 @@
 
 ## structure
 
-service provider interface
+1. exchange-rate-api 
 
-service provider
+    - api: business logic
+    - spi: service provider interface
+    - ExchangeRate.java: helper class
+    - App.java: entry
 
-define a file in META-INF/services with name = SPI name(org.zbinxp.rate.spi.ExchangeRateProvider), and content equals service provider implementation(org.zbinxp.rate.impl.YahooFinanceExchangeRateProvider)
+2. exchange-rate-impl: service provider implementation
 
-ServiceLoader.load(ExchangeRateProvider.class)自动加载service provider实现，当然代码需要放在classpath or lib/ext下面
+    - YahooFinanceExchangeRateProvider.java: service provider
+    - YahooQuoteManagerImple.java: business logic
+    - QuoteResponse.java, QuoteResponseWrapper: json entity
+    - pom.xml: pay attention to `maven-dependency-plugin`, which copies dependencies to a folder named `depends`. These dependencies are used by classloaders.
+
+## how it works
+
+1. service provider interface
+
+2. service provider
+
+3. define a file in META-INF/services with name = SPI name(org.zbinxp.rate.spi.ExchangeRateProvider), and content equals service provider implementation(org.zbinxp.rate.impl.YahooFinanceExchangeRateProvider)
+
+4. ServiceLoader.load(ExchangeRateProvider.class) loads the implementation of service provider，which is packaged and put into ext dirs.
 
 ## how to run
 
